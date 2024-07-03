@@ -64,8 +64,8 @@ CLI Usage:
 ```cmd
 python main.py -H <host> -s <packet_size> [-f]
 ```
-- <host> : The host to ping (default: 8.8.8.8)
-- <packet_size> : The size of the ping packet in bytes (default: 32)
+- /<host> : The host to ping (default: 8.8.8.8)
+- /<packet_size> : The size of the ping packet in bytes (default: 32)
 - -f : Enable logging to a CSV file (optional)
 
 Example 1:
