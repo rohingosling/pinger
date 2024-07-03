@@ -95,3 +95,16 @@ if __name__ == "__main__":
     app = Application(config)
     app.run()
 ```
+
+## Features
+- Ping a specified host with a configurable packet size.
+- Log ping results to a CSV file.
+- Print statistics to the console.
+
+## Contributing
+Contributions are welcome! Please follow the contribution guidelines.
+1. Fork the project.
+2. Create your feature branch (git checkout -b feature/AmazingFeature).
+3. Commit your changes (git commit -m 'Add some AmazingFeature').
+4. Push to the branch (git push origin feature/AmazingFeature).
+5. Open a pull request.
