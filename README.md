@@ -113,7 +113,7 @@ Contributions are welcome! Please follow the contribution guidelines.
 Distributed under the MIT License. See LICENSE for more information.
 
 ## Contact Information
-- [@rohingosling](https://x.com/rohingosling)
+- Twitter: [@rohingosling](https://x.com/rohingosling)
 - Project Link: [https://github.com/your-username/your-repo](https://github.com/rohingosling/pinger)
 
 ## Acknowledgments
