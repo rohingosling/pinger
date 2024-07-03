@@ -108,3 +108,13 @@ Contributions are welcome! Please follow the contribution guidelines.
 3. Commit your changes (git commit -m 'Add some AmazingFeature').
 4. Push to the branch (git push origin feature/AmazingFeature).
 5. Open a pull request.
+
+## License
+Distributed under the MIT License. See LICENSE for more information.
+
+## Contact Information
+- @rohingosling
+- Project Link: [https://github.com/your-username/your-repo](https://github.com/rohingosling/pinger)
+
+## Acknowledgments
+- [ping3](https://github.com/kyan001/ping3)
