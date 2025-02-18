@@ -11,6 +11,50 @@ A Python application to ping a specified host, log the results to a CSV file, an
 6. [Contact Information](#contact-information)
 7. [Acknowledgements](#acknowledgements)
 
+## Usage
+
+CLI Usage:
+
+```cmd
+python main.py -H <host> -s <packet_size> [-f]
+```
+- `<host>` : The host to ping (default: 8.8.8.8)
+- `<packet_size>` : The size of the ping packet in bytes (default: 32)
+- `-f` : Enable logging to a CSV file (optional)
+
+Example 1:
+- Ping Google with 32-byte packets.
+- Do not write output to CSV file, i.e. do not include the `-f` argument.
+
+```cmd
+python main.py -H 8.8.8.8 -s 32
+```
+
+Example 2:
+- Ping local host with 128-byte packets.
+- Write output to CSV file, i.e. Include the `-f` argument.
+
+```cmd
+python main.py -H 192.168.1.1 -s 128 -f
+```
+
+Code Usage:
+
+```python
+from app_config import AppConfig
+from application import Application
+
+if __name__ == "__main__":
+    config = AppConfig().get_arguments()
+    app = Application(config)
+    app.run()
+```
+
+## Features
+- Ping a specified host with a configurable packet size.
+- Log ping results to a CSV file.
+- Print statistics to the console.
+
 ## Installation
 
 ### Prerequisites
@@ -56,50 +100,6 @@ A Python application to ping a specified host, log the results to a CSV file, an
     ```sh
     venv_save_requirements.bat
     ```
-
-## Usage
-
-CLI Usage:
-
-```cmd
-python main.py -H <host> -s <packet_size> [-f]
-```
-- `<host>` : The host to ping (default: 8.8.8.8)
-- `<packet_size>` : The size of the ping packet in bytes (default: 32)
-- `-f` : Enable logging to a CSV file (optional)
-
-Example 1:
-- Ping Google with 32-byte packets.
-- Do not write output to CSV file, i.e. do not include the `-f` argument.
-
-```cmd
-python main.py -H 8.8.8.8 -s 32
-```
-
-Example 2:
-- Ping local host with 128-byte packets.
-- Write output to CSV file, i.e. Include the `-f` argument.
-
-```cmd
-python main.py -H 192.168.1.1 -s 128 -f
-```
-
-Code Usage:
-
-```python
-from app_config import AppConfig
-from application import Application
-
-if __name__ == "__main__":
-    config = AppConfig().get_arguments()
-    app = Application(config)
-    app.run()
-```
-
-## Features
-- Ping a specified host with a configurable packet size.
-- Log ping results to a CSV file.
-- Print statistics to the console.
 
 ## Contributing
 Contributions are welcome! Please follow the contribution guidelines.
