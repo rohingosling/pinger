@@ -1,0 +1,90 @@
+# ---------------------------------------------------------------------------
+# Build and release pinger standalone executables.
+#
+# What this does, and why it is here:
+#
+#   When a GitHub Release is published, this workflow builds the standalone
+#   one-file executable on GitHub's own hosted runners -- one per target OS --
+#   then attaches each binary to that Release. Building in public CI (rather than
+#   uploading a binary built on a maintainer's machine) gives consumers three
+#   things they can verify for themselves:
+#
+#     1. A public, auditable build log -- the exact commands that produced the
+#        binary, and the log of them running, are visible to anyone.
+#     2. A clean-room build -- a fresh checkout of the released commit on a
+#        disposable runner, with no contamination from a local machine.
+#     3. Signed build provenance (SLSA) -- `actions/attest-build-provenance`
+#        cryptographically binds each binary to this repo, commit, and workflow
+#        run. A consumer verifies it with:
+#
+#            gh attestation verify pinger.exe --repo rohingosling/pinger
+#
+#   Note: this is provenance, NOT Windows Authenticode code signing -- the
+#   SmartScreen "unknown publisher" prompt still appears (that needs a paid
+#   code-signing certificate).
+#
+# The build command mirrors build.bat / build.sh exactly, and pins PyInstaller
+# to the same version as venv_requirements.txt, so a reader can confirm the CI
+# build matches the documented local build.
+#
+# Triggers:
+#   - release: published  -> build, attest, and upload assets to the Release.
+#   - workflow_dispatch    -> build + attest only (manual test build; no upload).
+# ---------------------------------------------------------------------------
+
+name: Build and release executables
+
+on:
+  release:
+    types: [ published ]
+  workflow_dispatch:
+
+permissions:
+  contents:     write   # upload assets to the Release
+  id-token:     write   # OIDC token for provenance attestation
+  attestations: write   # write the signed provenance statement
+
+jobs:
+  build:
+    name: Build ${{ matrix.label }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os:     windows-latest
+            label:  Windows (x64)
+            binary: pinger.exe
+          - os:     ubuntu-latest
+            label:  Linux (x64)
+            binary: pinger
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller==6.21.0
+
+      - name: Build standalone executable
+        run: pyinstaller --noconfirm --clean --onefile --console --name pinger --specpath build src/main.py
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/${{ matrix.binary }}
+
+      - name: Upload executable to the Release
+        if: github.event_name == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: gh release upload "${{ github.event.release.tag_name }}" "dist/${{ matrix.binary }}" --clobber
